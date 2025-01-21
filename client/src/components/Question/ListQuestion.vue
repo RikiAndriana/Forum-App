@@ -15,7 +15,7 @@
         <div
           v-if="
             authStore.currentUser &&
-            authStore.currentUser._id === props.data.userId
+            authStore.currentUser._id === props.data.userId._id
           "
         >
           <Button
