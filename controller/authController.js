@@ -60,7 +60,9 @@ export const LogoutUser = (req, res) => {
 };
 
 export const GetUser = asyncWrapper(async (req, res) => {
-  const user = await User.findById(req.user.id).select({ password: 0 });
+  const user = await User.findById(req.user.id)
+    .select({ password: 0 })
+    .populate("listQuestion");
   if (user) {
     return res.status(200).json({ user });
   }

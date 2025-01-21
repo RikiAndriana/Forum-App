@@ -8,7 +8,7 @@
         @click="dialog = true"
       />
       <div v-else>
-        <Button label="Dashboard" icon="pi pi-home" />
+        <Button @click="DashboardPath" label="Dashboard" icon="pi pi-home" />
         <Button
           label="Logout"
           class="ml-3"
@@ -29,11 +29,16 @@ import FormAuthComponent from "@/components/FormAuthComponent.vue";
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/authStores";
+import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 // Action pinia
 const { LogoutUser } = authStore;
+const DashboardPath = () => {
+  router.push({ name: "Dashboard" });
+};
 
 // State pinia
 const { dialog } = storeToRefs(authStore);
@@ -42,24 +47,16 @@ const items = ref([
   {
     label: "Home",
     icon: "pi pi-home",
+    command: () => {
+      router.push({ name: "home" });
+    },
   },
   {
-    label: "Projects",
-    icon: "pi pi-search",
-    items: [
-      {
-        label: "Components",
-        icon: "pi pi-bolt",
-      },
-      {
-        label: "Blocks",
-        icon: "pi pi-server",
-      },
-    ],
-  },
-  {
-    label: "Contact",
-    icon: "pi pi-envelope",
+    label: "About",
+    icon: "pi pi-book",
+    command: () => {
+      router.push({ name: "About" });
+    },
   },
 ]);
 </script>
