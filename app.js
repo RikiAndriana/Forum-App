@@ -6,6 +6,9 @@ import cors from "cors";
 // Router
 import authRouter from "./router/authRouter.js";
 import questionRouter from "./router/questionRouter.js";
+import answerRouter from "./router/answerRouter.js";
+import votingRouter from "./router/votingQuestionRouter.js";
+import reportQuestionRouter from "./router/reportQuestionRouter.js";
 
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -26,6 +29,9 @@ if (process.env.NODE_ENV === "development") {
 // Parent Router
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/question", questionRouter);
+app.use("/api/v1/answer", answerRouter);
+app.use("/api/v1/voting", votingRouter);
+app.use("/api/v1/report/question", reportQuestionRouter);
 
 app.use(notFound);
 app.use(errorHandler);

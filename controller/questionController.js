@@ -72,10 +72,12 @@ export const QuestionAll = asyncWrapper(async (req, res) => {
 
 export const DetailQuestion = asyncWrapper(async (req, res) => {
   const idParams = req.params.id;
-  const question = await Question.findById(idParams).populate(
-    "userId",
-    "-password"
-  );
+  const question = await Question.findById(idParams)
+    .populate("userId", "-password")
+    .populate({
+      path: "listAnswer",
+      populate: { path: "userId", select: "-password" },
+    });
   if (!question) {
     return res.status(404).json({ message: "Question id no found" });
   }
@@ -119,7 +121,8 @@ export const DeleteQuestion = asyncWrapper(async (req, res) => {
   }
 
   checkPermission(req.user, selectedQuestion.userId, res);
-  await Question.findByIdAndDelete(paramId);
+
+  await selectedQuestion.deleteOne();
 
   return res.status(200).json({
     message: "Question succesfully deleted",

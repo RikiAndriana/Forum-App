@@ -25,7 +25,24 @@ const questionSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
+
+questionSchema.virtual("listAnswer", {
+  ref: "Answer",
+  localField: "_id",
+  foreignField: "questionId",
+  justOne: false,
+});
+
+questionSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function () {
+    await this.model("ReportQuestion").deleteMany({ questionId: this._id });
+    await this.model("VotingQuestion").deleteMany({ questionId: this._id });
+    await this.model("Answer").deleteMany({ questionId: this._id });
+  }
 );
 
 const Question = mongoose.model("Question", questionSchema);
